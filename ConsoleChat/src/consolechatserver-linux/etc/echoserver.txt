@@ -1,0 +1,11 @@
+[echoserver:100]
+DefaultInterface = eth0
+DefaultPort = 11000
+ReliableInterface = eth0
+ReliablePort = 11000
+BackboneInterface = eth0
+BackbonePort = 11001
+MaxConnection = 1000
+HeaderCrypt = true
+LogPath = /tmp
+InfoPath = /tmp

@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <Version>1.5.1</Version>
+    <Authors>Kang Kwibog</Authors>
+    <Company>Origin Studio Inc.</Company>
+    <Copyright>Copyright © 2022 Origin Studio Inc.</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\temp\Debug_ConsoleChatClient_DNC60\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\temp\Release_ConsoleChatClient_DNC60\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="NetDrone.AutoFramework.CCU30">
+      <HintPath>..\..\lib\Release_NetDrone_dotNET\NetDrone.AutoFramework.CCU30.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&quot;$(SolutionDir)\build\dotnet\make-bin-copy.bat&quot; &quot;$(SolutionDir)&quot; &quot;$(ConfigurationName)_ConsoleChatClient_DNC60&quot; &quot;$(ConfigurationName)_Test_dotNET&quot; &quot;$(TargetName)&quot;" />
+  </Target>
+
+</Project>

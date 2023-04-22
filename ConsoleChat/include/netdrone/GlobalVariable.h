@@ -1,0 +1,75 @@
+/*
+ * NetDrone Engine
+ * Copyright © 2022 Origin Studio Inc.
+ *
+ */
+
+#ifndef ___NETDRONE_GLOBALVARIABLE_H___
+#define ___NETDRONE_GLOBALVARIABLE_H___
+
+#include "ReTypedefined.h"
+
+#include "net/Protocol.h"
+
+const INT iBACKTRACE_BUFFER_SIZE = 256;
+
+const INT iMTU_SIZE = 1440;
+const INT iIP_HEAD_SIZE = 24;
+const INT iTCP_HEAD_SIZE = 24;
+
+const INT iDEFAULT_SO_SNDBUF_SIZE = 256*1024;
+const INT iDEFAULT_SO_RCVBUF_SIZE = 256*1024;
+
+const INT iTCP_PACKET_HEAD_SIZE = sizeof(STcpPacketHeader);
+const INT iUDP_PACKET_HEAD_SIZE = sizeof(SUdpPacketHeader);
+const INT iCOMMAND_HEAD_SIZE = sizeof(SCommandHeader);
+
+const INT iMAX_PACKET_SIZE = iMTU_SIZE;					// 패킷 최대 크기 정보(MTU 크기를 넘길 수 없음)
+const INT iPACKET_DATA_SIZE = iMAX_PACKET_SIZE - iUDP_PACKET_HEAD_SIZE;
+const INT iCOMMAND_DATA_SIZE = iPACKET_DATA_SIZE - iCOMMAND_HEAD_SIZE;
+
+const INT iMAX_TCPCONNECTING_LIMITED_SEC = 0;
+const INT iMAX_TCPCONNECTING_LIMITED_USEC = 5000000;	// 0.5 sec(1 sec -> 10000000)
+const INT iTCP_MAX_SYN_BACKLOG = 1280;					// /proc/sys/net/ipv4/tcp_max_syn_backlog 값 참조.
+
+const INT iMAX_PACKETBUFFER_LIST = 1;
+
+const INT iRETRANSMISSION_TIME = 35;					// 0.35 sec(35 ms)
+const INT iKEEPALIVE_TIME = 15000;						// 15 sec
+
+const INT iMAX_UDP_PACKET_SEQUENCE = 268435455;			// 28 bit
+const INT iMAX_UDP_RELIABLE_ACK_QUEUE = 500;
+const INT iMAX_UDP_SEND_QUEUE = 1000;
+const INT iUDP_CONNECTING_LIMITED_TICK = 3000;			// 3 sec (3000 ms)
+
+const INT iMAX_NATIVE_COMMAND_QUEUE = 1000;
+const INT iMAX_EXTEND_COMMAND_QUEUE = 10000;
+
+const INT iMAX_SEPARATION_INDEX = 100;
+
+const INT iACTION_STRING_LEN = 80;
+
+const INT iDATABASE_SQL_BUFFER_LEN = 4096;
+const INT iDATABASE_INFO_COUNT = 30;
+const INT iDATABASE_CHARACTER_SET_LEN = 256;
+
+const INT iDB_HOST_NAME_LEN = 63;
+const INT iDB_DATABASE_NAME_LEN = 63;
+const INT iDB_USER_NAME_LEN = 15;
+const INT iDB_PASSWD_NAME_LEN = 63;
+const INT iDB_FIELD_NAME_LEN = 30;						// binary file 읽을때 사용
+
+const INT iMAX_CONFIG_BUFFER_LEN = 256;
+const INT iMAX_CONFIG_KEY_LEN = 256;
+const INT iMAX_CONFIG_VALUE_LEN = 256;
+
+const INT iLOG_BUFFER_LEN = 2048;
+
+const INT iFILE_NAME_LEN = 255;
+const INT iFILE_PATH_LEN = 1023;
+
+const INT iMAX_PING_LATENCY_TICK = 1000;         	    // 10 sec
+
+#endif // ___NETDRONE_GLOBALVARIABLE_H___
+
+/* EOF */
