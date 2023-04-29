@@ -59,16 +59,25 @@ namespace CompatibilityStandards {
 							bCheck = false;
 						}
 
-						if(Action("creating listener for service", isptr(m_kListener = GetNetwork().Create(ConvertToBytes("0.0.0.0"), 0, NETWORK_TYPE.NETWORK_UDP_SERVER)))) {
-							IDispatcherList kDispatcherList = GetNetwork().GetDispatcherList();
-							if(isptr(kDispatcherList)) {
-								if(g_kCfgMgr.IsHeaderCrypt()) {
-									kDispatcherList.SetHeaderCrypt(true);
-								}
+						if(bCheck) {
+#if _THREAD
+							GetNetwork().CreateWaitEventThread(500, 1);
+							GetNetwork().CreateSenderThread(1, 1);
+#else
+							TRACE("thread is not initialized");
+#endif
 
-								m_kConnector = GetNetwork().Empty();
-								if(isptr(m_kConnector)) {
-									m_kConnector.SetSocket(m_kListener.GetSocket());
+							if(Action("creating listener for service", isptr(m_kListener = GetNetwork().Create(ConvertToBytes("0.0.0.0"), 0, NETWORK_TYPE.NETWORK_UDP_SERVER)))) {
+								IDispatcherList kDispatcherList = GetNetwork().GetDispatcherList();
+								if(isptr(kDispatcherList)) {
+									if(g_kCfgMgr.IsHeaderCrypt()) {
+										kDispatcherList.SetHeaderCrypt(true);
+									}
+
+									m_kConnector = GetNetwork().Empty();
+									if(isptr(m_kConnector)) {
+										m_kConnector.SetSocket(m_kListener.GetSocket());
+									}
 								}
 							}
 						}
@@ -78,9 +87,26 @@ namespace CompatibilityStandards {
 							bCheck = false;
 						}
 
-						if(Action("creating connector for service", isptr(m_kConnector = GetNetwork().Create(ConvertToBytes("0.0.0.0"), 0, NETWORK_TYPE.NETWORK_TCP_CLIENT)))) {
-							if(g_kCfgMgr.IsHeaderCrypt()) {
-								m_kConnector.SetHeaderCrypt(true);
+						if(bCheck) {
+#if _THREAD
+							GetNetwork().CreateWaitEventThread(500, 1);
+
+							INT iCPUNums = Environment.ProcessorCount;
+							if(4 < iCPUNums) {
+								GetNetwork().CreateSenderThread(4, 1);
+							} else if(2 < iCPUNums) {
+								GetNetwork().CreateSenderThread(2, 1);
+							} else {
+								GetNetwork().CreateSenderThread(1, 1);
+							}
+#else
+							TRACE("thread is not initialized");
+#endif
+
+							if(Action("creating connector for service", isptr(m_kConnector = GetNetwork().Create(ConvertToBytes("0.0.0.0"), 0, NETWORK_TYPE.NETWORK_TCP_CLIENT)))) {
+								if(g_kCfgMgr.IsHeaderCrypt()) {
+									m_kConnector.SetHeaderCrypt(true);
+								}
 							}
 						}
 					}
@@ -118,8 +144,10 @@ namespace CompatibilityStandards {
 
 			public bool
 			Update() {
+#if !_THREAD
 				GetNetwork().WaitEvent(100);
 				GetNetwork().SendQueue();
+#endif
 
 				if(false == GetNetwork().GetCommandQueue().Empty()) {
 					CNativeCommand kNativeCommand = null;
@@ -148,6 +176,26 @@ namespace CompatibilityStandards {
 				}
 
 				return true;
+			}
+
+			public bool
+			StartThread() {
+#if _THREAD
+				GetNetwork().StartThread();
+				return true;
+#else
+				return false;
+#endif
+			}
+
+			public bool
+			CancelThread() {
+#if _THREAD
+				GetNetwork().CancelThread();
+				return true;
+#else
+				return false;
+#endif
 			}
 
 			public INT
@@ -295,9 +343,6 @@ namespace CompatibilityStandards {
 			public void			SetSendPingServerTick(tick_t o)	{ m_tkSendPingServerTick = o; }
 			public tick_t		GetSendPingServerTick()			{ return m_tkSendPingServerTick; }
 
-			public bool			IsInput()						{ return m_bInput; }
-			public void			SetInput(bool o)				{ m_bInput = o; }
-
 			private CNetworkEx	m_kNetwork = new CNetworkEx();
 
 			private CConnector	m_kConnector = null;
@@ -306,8 +351,6 @@ namespace CompatibilityStandards {
 			private tick_t		m_tkDelayPingTick = 0;
 			private tick_t		m_tkSendPingServerTick = 0;
 			private tick_t		m_tkTimeoutLoginTick = 0;
-
-			private bool		m_bInput = false;
 
 			private bool		m_bInitialized = false;
 

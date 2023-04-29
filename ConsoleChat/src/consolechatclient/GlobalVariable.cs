@@ -42,6 +42,12 @@ namespace CompatibilityStandards {
 		public const INT	iUNIT_NAME_LEN = 32;
 
 		public const INT	iMAX_CHAT_LEN = 255;
+
+#if DEBUG
+		public const INT	iRECV_PING_TICK = 60000;   ///< 10 min
+#else
+		public const INT	iRECV_PING_TICK = 9000;
+#endif
 	}
 }
 

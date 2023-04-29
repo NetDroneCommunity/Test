@@ -95,8 +95,6 @@ namespace CompatibilityStandards {
 					g_kNetMgr.SetDelayPingTick(g_kTick.GetTick());
 				}
 
-				g_kNetMgr.SetInput(true);
-
 				OUTPUT("OK: tick: " + tRData.tick + ", delay: " + String.Format("{0:F2}", fDelaySec) + " sec, bytes: " + (iTCP_PACKET_HEAD_SIZE + iCOMMAND_HEAD_SIZE + Marshal.SizeOf(tRData)));
 			}
 			return true;

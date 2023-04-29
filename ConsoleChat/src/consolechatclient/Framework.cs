@@ -61,6 +61,9 @@ namespace CompatibilityStandards {
 
 					m_bInitialized = true;
 					m_bDoing = true;
+
+					Startup();
+
 					return true;
 				}
 				return false;
@@ -69,6 +72,8 @@ namespace CompatibilityStandards {
 			public bool
 			Release() {
 				if(m_bInitialized) {
+					Shutdown();
+
 					m_bInitialized = false;
 					m_bDoing = false;
 
@@ -85,6 +90,40 @@ namespace CompatibilityStandards {
 				return true;
 			}
 
+			public virtual bool
+			CreateFrameworkThread(UINT uiSleepTime_ =0) {
+#if _THREAD
+				m_kFrameworkThread = new CFrameworkThread(this, (INT)uiSleepTime_);
+				return true;
+#else
+				return false;
+#endif
+			}
+
+			public virtual bool
+			StartThread() {
+#if _THREAD
+				if(isptr(m_kFrameworkThread)) {
+					Action("starting framework thread", m_kFrameworkThread.Start());
+				}
+				return true;
+#else
+				return false;
+#endif
+			}
+
+			public virtual bool
+			CancelThread() {
+#if _THREAD
+				if(isptr(m_kFrameworkThread)) {
+					Action("stopping framework thread", m_kFrameworkThread.Cancel());
+				}
+				return true;
+#else
+				return false;
+#endif
+			}
+
 			public bool
 			Update() {
 				if(false == m_bDoing) {
@@ -97,11 +136,43 @@ namespace CompatibilityStandards {
 				return true;
 			}
 
+			public bool
+			Startup() {
+				if(m_bInitialized) {
+					if(g_kNetMgr.StartThread()) {
+						//TRACE("network manager: sender thread: start");
+					} else {
+						//TRACE("network manager: sender thread: not used");
+					}
+					return true;
+				}
+				return false;
+			}
+
+			public bool
+			Shutdown() {
+				if(m_bInitialized) {
+					if(g_kNetMgr.CancelThread()) {
+						//TRACE("network manager: sender thread: cancel");
+					} else {
+						//TRACE("network manager: sender thread: not used");
+					}
+
+					Thread.Sleep(1);
+					return true;
+				}
+				return false;
+			}
+
 			public bool		IsDoing()			{ return m_bDoing; }
 			public void		SetDoing(bool o)	{ m_bDoing = o; }
 
 			private bool	m_bInitialized = false;
 			private bool	m_bDoing = true;
+
+#if _THREAD
+			private CFrameworkThread		m_kFrameworkThread = null;
+#endif
 		}
 	}
 }

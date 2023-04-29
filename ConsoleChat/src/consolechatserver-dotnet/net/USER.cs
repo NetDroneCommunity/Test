@@ -163,7 +163,7 @@ namespace CompatibilityStandards {
 						kCommand.SetOrder((UINT)PROTOCOL.OTHER_CHAT);
 						kCommand.SetExtra((UINT)EXTRA.NONE);
 						//kCommand.SetMission(kCommand_.GetMission());
-						//kCommand.SetOption(kCommand_.GetOption());
+						kCommand.SetOption(kCommand_.GetOption());
 
 						SOtherChatGsToCl tSData = new SOtherChatGsToCl(true);
 						tSData.SetName(kPlayer.GetName());

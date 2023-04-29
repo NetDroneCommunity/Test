@@ -50,7 +50,11 @@ namespace CompatibilityStandards {
 		Version() {
 			PRINT(GetNetDroneVersion());
 			PRINT(GetServiceVersion());
+#if _THREAD
+			PRINT("CLR thread");
+#else
 			PRINT("non-thread");
+#endif
 		}
 
 		public static void Main(string[] args) {
@@ -119,6 +123,8 @@ namespace CompatibilityStandards {
 							g_kCfgMgr.SetReliableUdp(bReliableUdp);
 							g_kCfgMgr.SetHeaderCrypt(bHeaderCrypt);
 
+							g_kFramework.CreateFrameworkThread(10);
+
 							if(g_kFramework.Initialize()) {
 								g_kCfgMgr.SetLoginId(szLoginId);
 								g_kCfgMgr.SetChannelIndex(iChannelIndex);
@@ -141,25 +147,27 @@ namespace CompatibilityStandards {
 									Version();
 
 									PRINT("");
+
 									if(g_kNetMgr.Login()) {
+										g_kFramework.StartThread();
+
 										while(g_kFramework.IsDoing()) {
-											if(g_kNetMgr.IsInput()) {
-												string szMessage = "";
+											string szMessage = "";
 
-												Console.Write("input message: ");
-												szRead = Console.ReadLine();
+											Console.Write("input message: ");
+											szRead = Console.ReadLine();
 
-												if(0 < szRead.Length) {
-													szMessage = szRead;
-												}
-
-												if(0 < szMessage.Length) {
-													SEND_USER_CHAT(szMessage);
-													g_kNetMgr.SetInput(false);
-												}
+											if(0 < szRead.Length) {
+												szMessage = szRead;
 											}
 
-											g_kFramework.Update();
+											if(0 < szMessage.Length) {
+												SEND_USER_CHAT(szMessage);
+											}
+
+#if !_THREAD
+											//g_kFramework.Update();
+#endif
 											Thread.Sleep(10);
 										}
 									}
@@ -168,6 +176,7 @@ namespace CompatibilityStandards {
 						} catch(Exception e) {
 							//Backtrace(e);
 						} finally {
+							g_kFramework.CancelThread();
 							g_kFramework.Release();
 						}
 					} else {

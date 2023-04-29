@@ -44,7 +44,7 @@ namespace CompatibilityStandards {
 			public CCfgMgr() {}
 			~CCfgMgr() { Release(); }
 
-			public bool			Initialize()			{ return true; }
+			public bool			Initialize()					{ return true; }
 
 			public bool
 			Release() {
@@ -53,20 +53,25 @@ namespace CompatibilityStandards {
 				m_bReliableUdp = false;
 				m_szLoginId = "";
 
+				//m_bInput = false;
+
 				return true;
 			}
 
-			public void			SetLoginId(string o)	{ m_szLoginId = o; }
-			public string		GetLoginId()			{ return m_szLoginId; }
+			public void			SetLoginId(string o)			{ m_szLoginId = o; }
+			public string		GetLoginId()					{ return m_szLoginId; }
 
-			public void			SetReliableUdp(bool o)	{ m_bReliableUdp = o; }
-			public bool			IsReliableUdp()			{ return m_bReliableUdp; }
+			public void			SetReliableUdp(bool o)			{ m_bReliableUdp = o; }
+			public bool			IsReliableUdp()					{ return m_bReliableUdp; }
 
-			public void			SetHeaderCrypt(bool o)	{ m_bHeaderCrypt = o; }
-			public bool			IsHeaderCrypt()			{ return m_bHeaderCrypt; }
+			public void			SetHeaderCrypt(bool o)			{ m_bHeaderCrypt = o; }
+			public bool			IsHeaderCrypt()					{ return m_bHeaderCrypt; }
 
-			public void			SetChannelIndex(INT o)	{ m_iChannelIndex = o; }
-			public INT			GetChannelIndex()		{ return m_iChannelIndex; }
+			public void			SetChannelIndex(INT o)			{ m_iChannelIndex = o; }
+			public INT			GetChannelIndex()				{ return m_iChannelIndex; }
+
+			//public bool			IsInput()						{ return m_bInput; }
+			//public void			SetInput(bool o)				{ m_bInput = o; }
 
 			private string		m_szLoginId = "";
 
@@ -74,6 +79,8 @@ namespace CompatibilityStandards {
 			private bool		m_bHeaderCrypt = false;
 
 			private INT			m_iChannelIndex = 0;
+
+			//private bool		m_bInput = false;
 		}
 	}
 }

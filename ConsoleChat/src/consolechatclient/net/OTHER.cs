@@ -43,7 +43,7 @@ namespace CompatibilityStandards {
 			SOtherChatGsToCl tRData = (SOtherChatGsToCl)kCommand_.GetData(typeof(SOtherChatGsToCl));
 			tRData.content[kCommand_.GetOption()] = (CHAR)('\0');
 
-			PRINT(ConvertToString(tRData.GetName()) + ":" + ConvertToString(tRData.GetContent()));
+			PRINT(ConvertToString(tRData.GetName()) + ": " + ConvertToString(tRData.GetContent()));
 			return true;
 		}
 

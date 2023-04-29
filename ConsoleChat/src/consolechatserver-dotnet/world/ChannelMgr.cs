@@ -577,14 +577,14 @@ namespace CompatibilityStandards {
 							if(kPlayer_.GetChannelIndex() < (INT)GetMaxChannel()) {
 								for(INT i = 0; i < m_iUserTopIndex[kPlayer_.GetChannelIndex()]; ++i) {
 									if(isptr(m_kUserList[kPlayer_.GetChannelIndex(), i])) {
-										if(m_kUserList[kPlayer_.GetChannelIndex(), i] != kPlayer_) {
+										//if(m_kUserList[kPlayer_.GetChannelIndex(), i] != kPlayer_) {
 											if(0 < m_kUserList[kPlayer_.GetChannelIndex(), i].GetKey()) {
 												if(-1 == m_kUserList[kPlayer_.GetChannelIndex(), i].GetRoomHandler().GetOffset()) {
 													TRACE("send: aid: " + m_kUserList[kPlayer_.GetChannelIndex(), i].GetAid() + ", key: " + m_kUserList[kPlayer_.GetChannelIndex(), i].GetKey());
 													m_kUserList[kPlayer_.GetChannelIndex(), i].Launcher(kCommand_, iSize_);
 												}
 											}
-										}
+										//}
 									}
 								}
 							}

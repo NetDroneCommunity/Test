@@ -14,10 +14,12 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>..\..\temp\Debug_ConsoleChatClient_DNC60\</OutputPath>
+    <DefineConstants>$(DefineConstants);_THREAD</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\..\temp\Release_ConsoleChatClient_DNC60\</OutputPath>
+    <DefineConstants>$(DefineConstants);_THREAD</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
